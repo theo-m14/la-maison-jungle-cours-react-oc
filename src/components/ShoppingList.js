@@ -1,43 +1,30 @@
 import { plantList } from '../datas/plantList'
+import '../styles/ShoppingList.css'
 
 function ShoppingList() {
-    let listPlant = [];
-    plantList.forEach(plant => {
-        listPlant.push(plant.name)
-    });
-    let categories = [];
-    let catExist;
-    //On parcours notre data de plante
-    plantList.forEach(plant =>{
-        //Ici on dit la catégories n'existe pas dans le tableau
-        catExist = false;
-        //On parcours le tableau pour savoir si la catégories existe déjà
-        categories.forEach(element =>{
-            //Si la catégories est déjà rentré on met le boolean correspondant en true
-            if(element==plant.category){
-                catExist = true;
-            }
-        })
-        //Si on a pas trouvé d'occurance de la catégorie dans le tableau on la crée
-        if(catExist == false) categories.push(plant.category);
-    })
+	const categories = plantList.reduce(
+		(acc, plant) =>
+			acc.includes(plant.category) ? acc : acc.concat(plant.category),
+		[]
+	)
 
 	return (
-
-        <div>
-            <ul>
-              {
-                  categories.map((categorie) => (<li key={categorie}>{categorie}</li>))
-              }
-            </ul>
-            <ul>
-            {
-                listPlant.map((plant)=> (<li key={plant}>{plant}</li>))
-            }
-            </ul>
-        </div>
-        
-    )
+		<div>
+			<ul>
+				{categories.map((cat) => (
+					<li key={cat}>{cat}</li>
+				))}
+			</ul>
+			<ul className='lmj-plant-list'>
+				{plantList.map((plant) => (
+					<li key={plant.id} className='lmj-plant-item'>
+						{plant.name}
+                        {plant.isSpecialOffer && <div className='lmj-sales'>PROMOTION</div>}
+					</li>
+				))}
+			</ul>
+		</div>
+	)
 }
 
 export default ShoppingList
