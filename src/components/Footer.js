@@ -2,7 +2,7 @@ import { useState } from 'react'
 import '../styles/Footer.css'
 
 function Footer() {
-	const [inputValue, setInputValue] = useState('')
+	const [inputValue, setInputValue] = useState('test')
 
 	return (
 		<footer className='lmj-footer'>
@@ -10,7 +10,7 @@ function Footer() {
 				Pour les passionné·e·s de plantes 🌿🌱🌵
 			</div>
 			<div className='lmj-footer-elem'>Laissez-nous votre mail :</div>
-            <input type='test' onBlur={(e) => verifEmail(e.target.value) && setInputValue(e.target.value)}></input>
+            <input type='text' value={inputValue} onChange={(e) => setInputValue(e.target.value)} onBlur={(e) => !verifEmail(e.target.value) && setInputValue('')}></input>
 		</footer>
 	)
 }
