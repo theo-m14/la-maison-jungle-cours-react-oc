@@ -1,13 +1,9 @@
 import { plantList } from '../datas/plantList'
 import PlantItem from './PlantItem'
 import '../styles/ShoppingList.css'
+import Categories from './Categories'
 
-function ShoppingList({ cart, updateCart }) {
-	const categories = plantList.reduce(
-		(acc, plant) =>
-			acc.includes(plant.category) ? acc : acc.concat(plant.category),
-		[]
-	)
+function ShoppingList({ cart, updateCart, categorieView, changeCat }) {
 
 	function addToCart(name, price) {
 		const currentPlantSaved = cart.find((plant) => plant.name === name)
@@ -24,29 +20,49 @@ function ShoppingList({ cart, updateCart }) {
 		}
 	}
 
-	return (
-		<div className='lmj-shopping-list'>
-			<ul>
-				{categories.map((cat) => (
-					<li key={cat}>{cat}</li>
-				))}
-			</ul>
-			<ul className='lmj-plant-list'>
-				{plantList.map(({ id, cover, name, water, light, price }) => (
-					<div key={id}>
-						<PlantItem
-							cover={cover}
-							name={name}
-							water={water}
-							light={light}
-							price={price}
-						/>
-						<button onClick={() => addToCart(name, price)}>Ajouter</button>
-					</div>
-				))}
-			</ul>
-		</div>
-	)
+	//On regarde si aucune catégorie n'est selectionné 
+	if(categorieView==='none'){
+		return (
+			<div className='lmj-shopping-list'>
+				<Categories categorieView={categorieView} changeCat={changeCat}/>
+				<ul className='lmj-plant-list'>
+					{plantList.map(({ id, cover, name, water, light, price, category }) => (
+						<div key={id}>
+							<PlantItem
+								cover={cover}
+								name={name}
+								water={water}
+								light={light}
+								price={price}
+							/>
+							<button onClick={() => addToCart(name, price)}>Ajouter</button>
+						</div>
+					))}
+				</ul>
+			</div>
+		)
+	}else{ //Si on a selectionné une catégorie, on affiche seulement les plantes si référant
+		let plantDisplay = plantList.filter((plant) => plant.category === categorieView)
+		return (
+			<div className='lmj-shopping-list'>
+				<Categories categorieView={categorieView} changeCat={changeCat}/>
+				<ul className='lmj-plant-list'>
+					{plantDisplay.map(({ id, cover, name, water, light, price, category }) => (
+						<div key={id}>
+							<PlantItem
+								cover={cover}
+								name={name}
+								water={water}
+								light={light}
+								price={price}
+							/>
+							<button onClick={() => addToCart(name, price)}>Ajouter</button>
+						</div>
+					))}
+				</ul>
+			</div>
+		)
+	}
 }
 
 export default ShoppingList

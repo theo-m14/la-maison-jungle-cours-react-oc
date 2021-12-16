@@ -8,6 +8,7 @@ import '../styles/Layout.css'
 
 function App() {
 	const [cart, updateCart] = useState([])
+	const [categorieView, changeCat] = useState('none');
 	return (
 		<div>
 			<Banner>
@@ -16,7 +17,7 @@ function App() {
 			</Banner>
 			<div className='lmj-layout-inner'>
 				<Cart cart={cart} updateCart={updateCart} />
-				<ShoppingList cart={cart} updateCart={updateCart} />
+				<ShoppingList cart={cart} updateCart={updateCart} categorieView={categorieView} changeCat={changeCat}/>
 			</div>
 			<Footer />
 		</div>
